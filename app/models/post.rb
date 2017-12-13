@@ -6,4 +6,12 @@ class Post < ActiveRecord::Base
   accepts_nested_attributes_for :tags, reject_if: proc { |tag_attributes| tag_attributes['name'].blank? }
 
   validates_presence_of :name, :content
+
+  
+  def categories_attributes=(category_attributes)
+    category_attributes.values.each do |category_attribute|
+      category = Category.find_or_create_by(category_attribute)
+      self.categories << category
+    end
+  end
 end
